@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/gymFragment">
+
+    <fragment
+        android:id="@+id/gymFragment"
+        android:name="com.example.gym.ui.GymFragment"
+        android:label="fragment_gym"
+        tools:layout="@layout/fragment_gym" >
+        <action
+            android:id="@+id/action_gymFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.gym.ui.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <argument
+            android:name="email"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_homeFragment_to_agendamentoFragment"
+            app:destination="@id/agendamentoFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_agendamentoListFragment"
+            app:destination="@id/agendamentoListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/agendamentoFragment"
+        android:name="com.example.gym.ui.AgendamentoFragment"
+        android:label="fragment_agendamento"
+        tools:layout="@layout/fragment_agendamento" >
+        <argument
+            android:name="email"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_agendamentoFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/agendamentoListFragment"
+        android:name="com.example.gym.ui.AgendamentoListFragment"
+        android:label="fragment_agendamento_list"
+        tools:layout="@layout/fragment_agendamento_list" >
+        <argument
+            android:name="email"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_agendamentoListFragment_to_agendamentoAtualizacaoFragment"
+            app:destination="@id/agendamentoAtualizacaoFragment" />
+        <action
+            android:id="@+id/action_agendamentoListFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/agendamentoAtualizacaoFragment"
+        android:name="com.example.gym.ui.AgendamentoAtualizacaoFragment"
+        android:label="fragment_agendamento_atualizacao"
+        tools:layout="@layout/fragment_agendamento_atualizacao" >
+        <argument
+            android:name="email"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_agendamentoAtualizacaoFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+</navigation>
