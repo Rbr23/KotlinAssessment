@@ -2,7 +2,6 @@ package com.example.gym.ui
 
 import android.graphics.Color
 import android.os.Build
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,14 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
-import androidx.compose.ui.text.toLowerCase
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.gym.R
-import com.example.gym.databinding.ActivityAgendamentoBinding
 import com.example.gym.databinding.FragmentAgendamentoBinding
-import com.example.gym.databinding.FragmentGymBinding
-import com.example.gym.databinding.FragmentHomeBinding
 import com.example.gym.model.UserEntity
 import com.example.gym.util.UIState
 import com.google.android.material.snackbar.Snackbar
@@ -33,7 +29,8 @@ class AgendamentoFragment : Fragment(R.layout.fragment_agendamento) {
     private val args: AgendamentoFragmentArgs by navArgs()
     private var data: String = ""
     private var hora: String = ""
-    private lateinit var viewModel: AgendamentoViewModel
+    private var email: String = ""
+    private val viewModel: AgendamentoViewModel by viewModels()
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -58,7 +55,6 @@ class AgendamentoFragment : Fragment(R.layout.fragment_agendamento) {
             false
         )
 
-        val email = args.email
         val datePicker = binding.datePicker
         datePicker.setOnDateChangedListener { _, year, monthOfYear, dayOfMonth ->
             calendar.set(Calendar.YEAR, year)
@@ -93,6 +89,7 @@ class AgendamentoFragment : Fragment(R.layout.fragment_agendamento) {
         binding.timePicker.setIs24HourView(true)
 
         binding.btnAgendar.setOnClickListener {
+            email = binding.editNome.text.toString()
             when {
                 hora.isEmpty() -> {
                     mensagem(it, "Preencha o horário!", "#FF0000")
@@ -106,8 +103,15 @@ class AgendamentoFragment : Fragment(R.layout.fragment_agendamento) {
                     mensagem(it, "Preencha a data", "#FF0000")
                 }
 
-                data.isNotEmpty() && hora.isNotEmpty() -> {
-                    viewModel.updateUser(UserEntity(email.lowercase(Locale.ROOT), data, hora))
+                email.isEmpty() -> {
+                    mensagem(it, "Coloque o e-mail do usuário!", "#FF0000")
+                }
+
+                data.isNotEmpty() && hora.isNotEmpty() && email.isNotEmpty() -> {
+                    viewModel.addUser(
+                        UserEntity(email.lowercase(Locale.ROOT), data, hora),
+                        args.email
+                    )
                     viewModel.users.observe(viewLifecycleOwner) { state ->
                         when (state) {
                             is UIState.Loading -> {

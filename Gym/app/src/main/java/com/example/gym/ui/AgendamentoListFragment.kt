@@ -66,17 +66,12 @@ class AgendamentoListFragment : Fragment(R.layout.fragment_agendamento_list) {
                             if (number == 1) {
                                 val direction =
                                     AgendamentoListFragmentDirections.actionAgendamentoListFragmentToAgendamentoAtualizacaoFragment(
-                                        args.email
+                                        args.email, user.cliente.toString()
                                     )
                                 findNavController().navigate(direction)
                             } else if (number == 2) {
-                                /* db.collection("agendamento")
-                                     .document(args.email.lowercase(Locale.ROOT))
-                                     .delete().addOnCompleteListener {
-                                         Log.d("deletado", "Sucesso")
-                                     }*/
                                 viewModel.deleteUser(
-                                    args.email.lowercase(Locale.ROOT)
+                                    args.email.lowercase(Locale.ROOT), user
                                 )
                                 viewModel.users.observe(viewLifecycleOwner) { state ->
                                     when (state) {
@@ -86,15 +81,9 @@ class AgendamentoListFragment : Fragment(R.layout.fragment_agendamento_list) {
 
                                         is UIState.Success -> {
                                             Log.d("", "deletou")
-                                            /*mensagem(
-                                                it,
-                                                "Agendamento realizado com sucesso!",
-                                                "#FF03DAC5"
-                                            )*/
                                         }
 
                                         is UIState.Failure -> {
-                                            // mensagem(it, "Erro no servidor", "#ff0000")
                                         }
                                     }
                                 }
@@ -109,54 +98,7 @@ class AgendamentoListFragment : Fragment(R.layout.fragment_agendamento_list) {
                 }
             }
         }
-        /* if (userId != null) {
-             db.collection("agendamento")
-                 .whereEqualTo("cliente", args.email.lowercase(Locale.ROOT))
-                 .get()
-                 .addOnSuccessListener { documentos ->
-                     for (doc in documentos) {
-                         listaServicos.add(
-                             doc.toObject(UserEntity::class.java)
-                         )
-                     }
-                     val layoutManager = LinearLayoutManager(context)
-                     recyclerView = view.findViewById(R.id.recycler_user)
-                     recyclerView.layoutManager = layoutManager
-                     recyclerView.setHasFixedSize(true)
-                     adapter = AgendamentoListAdapter(requireActivity(), listaServicos)
-                     recyclerView.adapter = adapter
 
-                     adapter.quandoClicaNoItemListener = object : AgendamentoListAdapter.Action {
-                         override fun action(user: UserEntity, number: Int) {
-                             if (number == 1) {
-                                 val direction =
-                                     AgendamentoListFragmentDirections.actionAgendamentoListFragmentToAgendamentoAtualizacaoFragment(
-                                         args.email
-                                     )
-                                 findNavController().navigate(direction)
-                             } else if (number == 2) {
-                                 db.collection("agendamento").document(args.email)
-                                     .delete().addOnCompleteListener {
-                                         Log.d("deletado", "Sucesso")
-                                     }
-                             }
-                         }
-
-                     }
-
-
-                 }.addOnFailureListener { error ->
-                     Log.d("", "fail", error)
-                 }
-         }*/
-
-    }
-
-    private fun mensagem(view: View, mensagem: String, cor: String) {
-        val snackbar = Snackbar.make(view, mensagem, Snackbar.LENGTH_SHORT)
-        snackbar.setBackgroundTint(Color.parseColor(cor))
-        snackbar.setTextColor(Color.parseColor("#FFFFFF"))
-        snackbar.show()
     }
 
 }

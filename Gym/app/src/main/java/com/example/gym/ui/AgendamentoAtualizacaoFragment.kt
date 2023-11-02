@@ -27,7 +27,7 @@ class AgendamentoAtualizacaoFragment : Fragment(R.layout.fragment_agendamento_at
     private var _binding: FragmentAgendamentoAtualizacaoBinding? = null
     private val binding get() = _binding!!
     private val calendar: Calendar = Calendar.getInstance()
-    private val args: AgendamentoFragmentArgs by navArgs()
+    private val args: AgendamentoAtualizacaoFragmentArgs by navArgs()
     private var data: String = ""
     private var hora: String = ""
     private val viewModel: AgendamentoAtualizacaoViewModel by viewModels()
@@ -59,6 +59,7 @@ class AgendamentoAtualizacaoFragment : Fragment(R.layout.fragment_agendamento_at
         )
 
         val email = args.email
+        val user = args.user
         val datePicker = binding.datePicker
         datePicker.setOnDateChangedListener { _, year, monthOfYear, dayOfMonth ->
             calendar.set(Calendar.YEAR, year)
@@ -107,7 +108,7 @@ class AgendamentoAtualizacaoFragment : Fragment(R.layout.fragment_agendamento_at
                 }
 
                 data.isNotEmpty() && hora.isNotEmpty() -> {
-                    viewModel.updateUser(UserEntity(email.lowercase(Locale.ROOT), data, hora))
+                    viewModel.updateUser(email.lowercase(Locale.ROOT), UserEntity(user, data, hora))
                     viewModel.users.observe(viewLifecycleOwner) { state ->
                         when (state) {
                             is UIState.Loading -> {
@@ -123,8 +124,6 @@ class AgendamentoAtualizacaoFragment : Fragment(R.layout.fragment_agendamento_at
                             }
                         }
                     }
-
-                    //salvarAgendamento(it, email, data, hora)
                 }
             }
         }
@@ -138,22 +137,4 @@ class AgendamentoAtualizacaoFragment : Fragment(R.layout.fragment_agendamento_at
         snackbar.setTextColor(Color.parseColor("#FFFFFF"))
         snackbar.show()
     }
-
-    /*private fun salvarAgendamento(view: View, cliente: String, data: String, hora: String) {
-        val db = FirebaseFirestore.getInstance()
-
-        val dadosusuario = hashMapOf(
-            "cliente" to cliente.lowercase(Locale.ROOT),
-            "data" to data.lowercase(Locale.ROOT),
-            "hora" to hora.lowercase(Locale.ROOT)
-        )
-
-        db.collection("agendamento").document(cliente.lowercase(Locale.ROOT))
-            .update("data", data.lowercase(Locale.ROOT), "hora", hora.lowercase(Locale.ROOT))
-            .addOnCompleteListener {
-                mensagem(view, "Agendamento realizado com sucesso!", "#FF03DAC5")
-            }.addOnFailureListener {
-                mensagem(view, "Erro no servidor", "#ff0000")
-            }
-    }*/
 }

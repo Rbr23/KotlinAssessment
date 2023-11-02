@@ -28,9 +28,9 @@ class AgendamentoListViewModel() : ViewModel() {
         }
     }
 
-    fun deleteUser(email: String) {
+    fun deleteUser(email: String, user: UserEntity) {
         _users.value = UIState.Loading
-        repository.delete(email) {
+        repository.delete(email, user) {
             _users.value = it
         }
     }

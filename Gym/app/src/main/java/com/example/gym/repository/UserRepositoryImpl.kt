@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.gym.model.UserEntity
 import com.example.gym.util.UIState
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.util.Locale
@@ -12,16 +13,17 @@ class UserRepositoryImpl() : UserRepository {
     val db = Firebase.firestore
 
     override fun getUser(email: String, result: (UIState<List<UserEntity>>) -> Unit) {
-        db.collection("agendamento")
-            .whereEqualTo("cliente", email)
-            .get()
+        db.collection(email).get()
             .addOnSuccessListener {
                 var listaServicos: MutableList<UserEntity> = arrayListOf()
-                for (doc in it) {
+                it.documents.forEach {
                     listaServicos.add(
-                        doc.toObject(UserEntity::class.java)
+                        UserEntity(
+                            it.data?.get("cliente").toString(),
+                            it.data?.get("data").toString(),
+                            it.data?.get("hora").toString()
+                        )
                     )
-
                 }
                 result.invoke(UIState.Success(listaServicos))
 
@@ -31,8 +33,12 @@ class UserRepositoryImpl() : UserRepository {
             }
     }
 
-    override fun update(user: UserEntity, result: (UIState<List<UserEntity>>) -> Unit) {
-        db.collection("agendamento").document(user.cliente.toString())
+    override fun update(
+        email: String,
+        user: UserEntity,
+        result: (UIState<List<UserEntity>>) -> Unit
+    ) {
+        db.collection(email).document(user.cliente.toString())
             .update("data", user.data.toString(), "hora", user.hora.toString())
             .addOnCompleteListener {
                 result.invoke(UIState.Success(listOf()))
@@ -41,9 +47,13 @@ class UserRepositoryImpl() : UserRepository {
             }
     }
 
-    override fun delete(email: String, result: (UIState<List<UserEntity>>) -> Unit) {
-        db.collection("agendamento")
-            .document(email)
+    override fun delete(
+        email: String,
+        user: UserEntity,
+        result: (UIState<List<UserEntity>>) -> Unit
+    ) {
+        db.collection(email)
+            .document(user.cliente.toString())
             .delete().addOnCompleteListener {
                 result.invoke(UIState.Success(listOf()))
             }.addOnFailureListener {
@@ -51,12 +61,16 @@ class UserRepositoryImpl() : UserRepository {
             }
     }
 
-    override fun addUser(user: UserEntity, result: (UIState<List<UserEntity>>) -> Unit) {
-        db.collection("agendamento").document(user.cliente.toString()).set(user)
+    override fun addUser(
+        user: UserEntity,
+        email: String,
+        result: (UIState<List<UserEntity>>) -> Unit
+    ) {
+        db.collection(email).document(user.cliente.toString()).set(user)
             .addOnCompleteListener {
-                result.invoke(UIState.Success(listOf()))//mensagem(view, "Agendamento realizado com sucesso!", "#FF03DAC5")
+                result.invoke(UIState.Success(listOf()))
             }.addOnFailureListener {
-                result.invoke(UIState.Failure(it.localizedMessage))//mensagem(view, "Erro no servidor", "#ff0000")
+                result.invoke(UIState.Failure(it.localizedMessage))
             }
     }
 

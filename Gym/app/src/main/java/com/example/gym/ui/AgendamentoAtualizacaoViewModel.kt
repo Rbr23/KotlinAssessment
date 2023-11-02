@@ -12,9 +12,9 @@ class AgendamentoAtualizacaoViewModel : ViewModel() {
     val users: LiveData<UIState<List<UserEntity>>> get() = _users
     val repository: UserRepositoryImpl = UserRepositoryImpl()
 
-    fun updateUser(user: UserEntity) {
+    fun updateUser(email: String, user: UserEntity) {
         _users.value = UIState.Loading
-        repository.update(user) {
+        repository.update(email, user) {
             _users.value = it
         }
     }
