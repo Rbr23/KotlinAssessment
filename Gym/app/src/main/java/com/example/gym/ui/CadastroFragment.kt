@@ -1,32 +1,38 @@
-package com.example.gym.view
+package com.example.gym.ui
 
 import android.content.Intent
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import com.example.gym.R
-import com.example.gym.databinding.ActivityCadastroBinding
-import com.example.gym.databinding.ActivityMainBinding
+import com.example.gym.databinding.FragmentCadastroBinding
+import com.example.gym.databinding.FragmentGymBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
-import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.Dispatchers
 
-class Cadastro : AppCompatActivity() {
-    private lateinit var binding: ActivityCadastroBinding
+class CadastroFragment : Fragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        FirebaseApp.initializeApp(this);
+    private var _binding: FragmentCadastroBinding? = null
+    private val binding get() = _binding!!
+
+    private lateinit var viewModel: CadastroViewModel
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        FirebaseApp.initializeApp(requireActivity());
         val auth = FirebaseAuth.getInstance()
-        binding = ActivityCadastroBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        supportActionBar?.hide()
+        _binding = FragmentCadastroBinding.inflate(layoutInflater)
 
         binding.btCadastro.setOnClickListener {
             val email = binding.editEmailCadastro.text.toString()
@@ -52,7 +58,7 @@ class Cadastro : AppCompatActivity() {
                                 mensagem(it, "Sucesso ao cadastrar usuário", "#0000ff")
                                 binding.editEmailCadastro.setText("")
                                 binding.ediSenhaCadastro.setText("")
-                                navegarPraMain(email)
+                                //   navegarPraMain(email)
                             }
                         }.addOnFailureListener { exception ->
                             val mensagemErro = when (exception) {
@@ -68,6 +74,8 @@ class Cadastro : AppCompatActivity() {
                 }
             }
         }
+
+        return binding.root;
     }
 
     private fun mensagem(view: View, mensagem: String, color: String) {
@@ -77,9 +85,4 @@ class Cadastro : AppCompatActivity() {
         snackbar.show()
     }
 
-    private fun navegarPraMain(nome: String) {
-        val intent = Intent(this, Main::class.java)
-        intent.putExtra("nome", nome)
-        startActivity(intent)
-    }
 }

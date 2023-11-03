@@ -71,4 +71,9 @@
             android:name="user"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/cadastroFragment"
+        android:name="com.example.gym.ui.CadastroFragment"
+        android:label="fragment_cadastro"
+        tools:layout="@layout/fragment_cadastro" />
 </navigation>

@@ -35,6 +35,10 @@ class GymFragment : Fragment(R.layout.fragment_gym) {
 
         _binding = FragmentGymBinding.inflate(inflater, container, false)
 
+        binding.btCadastrar.setOnClickListener {
+            findNavController().navigate(R.id.cadastroFragment)
+        }
+
         binding.btLogin.setOnClickListener {
             val email = binding.editNome.text.toString()
             val senha = binding.ediSenha.text.toString()
