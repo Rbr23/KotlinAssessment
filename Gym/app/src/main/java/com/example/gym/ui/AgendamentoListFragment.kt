@@ -62,7 +62,7 @@ class AgendamentoListFragment : Fragment(R.layout.fragment_agendamento_list) {
                     recyclerView.adapter = adapter
 
                     adapter.quandoClicaNoItemListener = object : AgendamentoListAdapter.Action {
-                        override fun action(user: UserEntity, number: Int) {
+                        override fun action(user: UserEntity, number: Int, it: View) {
                             if (number == 1) {
                                 val direction =
                                     AgendamentoListFragmentDirections.actionAgendamentoListFragmentToAgendamentoAtualizacaoFragment(
@@ -80,10 +80,20 @@ class AgendamentoListFragment : Fragment(R.layout.fragment_agendamento_list) {
                                         }
 
                                         is UIState.Success -> {
-                                            Log.d("", "deletou")
+                                            mensagem(
+                                                it,
+                                                "Usuário deletado com sucesso!",
+                                                "#FF03DAC5"
+                                            );
+                                            val direction =
+                                                AgendamentoListFragmentDirections.actionAgendamentoListFragmentToHomeFragment(
+                                                    args.email
+                                                )
+                                            findNavController().navigate(direction)
                                         }
 
                                         is UIState.Failure -> {
+                                            mensagem(it, "Erro no servidor", "#ff0000")
                                         }
                                     }
                                 }
@@ -99,6 +109,13 @@ class AgendamentoListFragment : Fragment(R.layout.fragment_agendamento_list) {
             }
         }
 
+    }
+
+    private fun mensagem(view: View, mensagem: String, cor: String) {
+        val snackbar = Snackbar.make(view, mensagem, Snackbar.LENGTH_SHORT)
+        snackbar.setBackgroundTint(Color.parseColor(cor))
+        snackbar.setTextColor(Color.parseColor("#FFFFFF"))
+        snackbar.show()
     }
 
 }

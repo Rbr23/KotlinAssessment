@@ -18,7 +18,7 @@ class AgendamentoListAdapter(
     val users: List<UserEntity>,
     var quandoClicaNoItemListener: Action =
         object : Action {
-            override fun action(user: UserEntity, number: Int) {
+            override fun action(user: UserEntity, number: Int, it: View) {
 
             }
         }
@@ -26,7 +26,7 @@ class AgendamentoListAdapter(
     RecyclerView.Adapter<AgendamentoListAdapter.AgendamentoListViewHolder>() {
 
     interface Action {
-        fun action(user: UserEntity, number: Int)
+        fun action(user: UserEntity, number: Int, it: View)
     }
 
 
@@ -76,13 +76,13 @@ class AgendamentoListAdapter(
                 when (it.itemId) {
                     R.id.editText -> {
                         Toast.makeText(c, "Botão de edição foi clicado", Toast.LENGTH_SHORT).show()
-                        quandoClicaNoItemListener.action(users[adapterPosition], 1)
+                        quandoClicaNoItemListener.action(users[adapterPosition], 1, itemView)
                         true
                     }
 
                     R.id.delete -> {
                         Toast.makeText(c, "Botão de deleção foi clicado", Toast.LENGTH_SHORT).show()
-                        quandoClicaNoItemListener.action(users[adapterPosition], 2)
+                        quandoClicaNoItemListener.action(users[adapterPosition], 2, itemView)
                         true
                     }
 

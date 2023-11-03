@@ -10,9 +10,4 @@
         android:id="@+id/delete"
         android:icon="@drawable/ic_delete"
         android:title="delete" />
-    <item
-        android:id="@+id/warning"
-        android:icon="@drawable/ic_warning"
-        android:title="warning" />
-
 </menu>

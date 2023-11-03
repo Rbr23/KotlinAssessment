@@ -120,6 +120,11 @@ class AgendamentoFragment : Fragment(R.layout.fragment_agendamento) {
 
                             is UIState.Success -> {
                                 mensagem(it, "Agendamento realizado com sucesso!", "#FF03DAC5")
+                                val direction =
+                                    AgendamentoFragmentDirections.actionAgendamentoFragmentToHomeFragment(
+                                        args.email
+                                    )
+                                findNavController().navigate(direction)
                             }
 
                             is UIState.Failure -> {
