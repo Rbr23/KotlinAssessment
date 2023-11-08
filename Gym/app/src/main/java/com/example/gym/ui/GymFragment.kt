@@ -10,11 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.gym.R
-import com.example.gym.databinding.ActivityMainBinding
 import com.example.gym.databinding.FragmentGymBinding
-import com.example.gym.view.Cadastro
-import com.example.gym.view.Home
-import com.firebase.ui.auth.AuthUI
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
