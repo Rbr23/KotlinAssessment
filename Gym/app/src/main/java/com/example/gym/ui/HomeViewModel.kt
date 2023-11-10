@@ -14,7 +14,6 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel : ViewModel() {
     val cards = MutableLiveData<List<CardsResponse>>()
-    val cards1 = MutableLiveData<List<Card>?>()
     val msg = MutableLiveData<String>()
 
     init {

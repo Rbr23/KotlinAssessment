@@ -66,7 +66,7 @@ dependencies {
     //implementation("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
     //kapt("androidx.hilt:hilt-compiler:1.0.0")
 
-   // annotationProcessor("com.google.dagger:hilt-android-compiler:2.44")
+    // annotationProcessor("com.google.dagger:hilt-android-compiler:2.44")
 
 
     // Testing Navigation
@@ -92,11 +92,17 @@ dependencies {
 
     // Import the Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+    // Also add the dependency for the Google Play services library and specify its version
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
 
     // When using the BoM, you don't specify versions in Firebase library dependencies
 
     // Add the dependency for the Firebase SDK for Google Analytics
     implementation("com.google.firebase:firebase-analytics-ktx")
+
+    // Import the BoM for the Firebase platform
+    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+
 
     // TODO: Add the dependencies for any other Firebase products you want to use
     // See https://firebase.google.com/docs/android/setup#available-libraries

@@ -99,7 +99,7 @@ class AgendamentoListAdapter(
 
         fun bindView(user: UserEntity) {
             textViewUserEmail.text = user.cliente
-            textViewUserHora.text = user.hora
+            textViewUserHora.text = "Dia: " + user.data + " / " + "Hora: " + user.hora
 
         }
     }
